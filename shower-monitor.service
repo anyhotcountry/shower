@@ -1,0 +1,15 @@
+[Unit]
+Description=Shower Monitor
+After=network-online.target
+ 
+[Service]
+ExecStart=/usr/bin/python3 -u /home/pi/shower/shower-monitor.py
+WorkingDirectory=/home/pi/shower/
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+RestartSec=10
+User=pi
+ 
+[Install]
+WantedBy=multi-user.target
