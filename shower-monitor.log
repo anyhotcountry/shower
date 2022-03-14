@@ -621,3 +621,29 @@
 2022-02-21 22:11:31 INFO     Connected with result code No error.
 2022-02-21 22:11:31 INFO     Initialising with: {'status': 'off', 'power': 990, 'level': 100, 'timestamp': 1645481490.7526908, 'start': 1645475666.858887, 'duration': 241.41816782951355, 'litres': 30.177270978689194}
 2022-02-21 22:11:33 INFO     Unsubscribed
+2022-02-28 08:59:09 WARNING  Power request failed: HTTPConnectionPool(host='10.226.2.42', port=80): Max retries exceeded with url: /config (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75f08890>: Failed to establish a new connection: [Errno 110] Connection timed out'))
+2022-02-28 08:59:11 WARNING  No messages received for 60 seconds. Exiting. 
+2022-02-28 08:59:22 INFO     Starting Shower Monitor...
+2022-02-28 08:59:22 INFO     Connected with result code No error.
+2022-02-28 08:59:22 INFO     Initialising with: {'status': 'off', 'power': 1867, 'level': 100, 'timestamp': 1646038614.1664436, 'start': 1646002076.4078028, 'duration': 182.60656547546387, 'litres': 22.825820684432983}
+2022-02-28 08:59:24 INFO     Unsubscribed
+2022-02-28 09:01:37 WARNING  Power request failed: HTTPConnectionPool(host='10.226.2.42', port=80): Max retries exceeded with url: /config (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75f115b0>: Failed to establish a new connection: [Errno 110] Connection timed out'))
+2022-02-28 09:01:39 WARNING  No messages received for 60 seconds. Exiting. 
+2022-02-28 09:01:50 INFO     Starting Shower Monitor...
+2022-02-28 09:01:50 INFO     Connected with result code No error.
+2022-02-28 09:01:50 INFO     Initialising with: {'status': 'off', 'power': 1867, 'level': 100, 'timestamp': 1646038614.1664436, 'start': 1646002076.4078028, 'duration': 182.60656547546387, 'litres': 22.825820684432983}
+2022-02-28 09:01:52 INFO     Unsubscribed
+2022-02-28 13:28:01 INFO     Starting Shower Monitor...
+2022-02-28 13:28:01 INFO     Connected with result code No error.
+2022-02-28 13:28:01 INFO     Initialising with: {'status': 'off', 'power': 1080, 'level': 100, 'timestamp': 1646041426.4810646, 'start': 1646002076.4078028, 'duration': 182.60656547546387, 'litres': 22.825820684432983}
+2022-02-28 13:28:03 INFO     Unsubscribed
+2022-03-07 09:27:24 WARNING  Power request failed: HTTPConnectionPool(host='10.226.2.42', port=80): Max retries exceeded with url: /config (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75ed9790>: Failed to establish a new connection: [Errno 110] Connection timed out'))
+2022-03-07 09:27:26 WARNING  No messages received for 60 seconds. Exiting. 
+2022-03-07 09:27:37 INFO     Starting Shower Monitor...
+2022-03-07 09:27:37 INFO     Connected with result code No error.
+2022-03-07 09:27:37 INFO     Initialising with: {'status': 'off', 'power': 1800, 'level': 100, 'timestamp': 1646645108.9342594, 'start': 1646611021.0346854, 'duration': 261.6618604660034, 'litres': 32.70773255825043}
+2022-03-07 09:27:39 INFO     Unsubscribed
+2022-03-07 15:46:55 INFO     Starting Shower Monitor...
+2022-03-07 15:46:55 INFO     Connected with result code No error.
+2022-03-07 15:46:55 INFO     Initialising with: {'status': 'off', 'power': 1800, 'level': 100, 'timestamp': 1646654328.8016353, 'start': 1646611021.0346854, 'duration': 261.6618604660034, 'litres': 32.70773255825043}
+2022-03-07 15:46:57 INFO     Unsubscribed
