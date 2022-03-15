@@ -152,7 +152,7 @@ def get_colour(litres, level, status):
     elif litres > 50:
         return ORANGE
     else:
-        return GREEN
+        return BLUE
 
 
 def meross_request(address, method, namespace, payload):
