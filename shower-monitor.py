@@ -30,8 +30,10 @@ last = {
     "litres": 0
 }
 
+
 def rgb_to_int(r, g, b):
     return 65536 * r + 256 * g + b
+
 
 WHITE = rgb_to_int(255, 255, 255)
 BLUE = rgb_to_int(0, 0, 255)
@@ -125,35 +127,22 @@ def set_light(rgb):
     timestamp = get_unix_time()
     message_id = msg_id(timestamp)
     sign = signing_key(message_id, settings.key, timestamp)
-    msg = {
-        "header": {
-            "from": "http://" + settings.device_address + "/config",
-            "messageId": message_id,
-            "method": "SET",
-            "namespace": "Appliance.Control.Light",
-            "payloadVersion": 1,
-            "sign": sign,
-            "timestamp": str(timestamp)
-        },
-        "payload": {
-            "light": {
-                "capacity": 6 if rgb == WHITE else 5,
-                "channel": 0,
-                "rgb": rgb,
-                "temperature": 100,
-                "luminance": 100,
-                "transform": -1
-            }
+    payload = {
+        "light": {
+            "capacity": 6 if rgb == WHITE else 5,
+            "channel": 0,
+            "rgb": rgb,
+            "temperature": 100,
+            "luminance": 100,
+            "transform": -1
         }
     }
     try:
-        resp = req.post("http://" + settings.light_address +
-                        "/config", json=msg, timeout=0.05)
-    except ConnectionError as ex:
+        meross_request(
+            settings.light_address, "SET", "Appliance.Control.Light", payload)
+    except Exception as ex:
         logger.warning("Setting light failed: {}".format(ex))
 
-def get_rgb(r, g, b):
-    return 65536 * r + 256 * g + b
 
 def get_colour(litres, level, status):
     if status == "off":
@@ -165,26 +154,33 @@ def get_colour(litres, level, status):
     else:
         return GREEN
 
-def request_power():
+
+def meross_request(address, method, namespace, payload):
     timestamp = get_unix_time()
     message_id = msg_id(timestamp)
     sign = signing_key(message_id, settings.key, timestamp)
     msg = {
         "header": {
-            "from": "http://" + settings.device_address + "/config",
+            "from": "http://" + address + "/config",
             "messageId": message_id,
-            "method": "GET",
-            "namespace": "Appliance.Control.Electricity",
+            "method": method,
+            "namespace": namespace,
             "payloadVersion": 1,
             "sign": sign,
             "timestamp": str(timestamp)
         },
-        "payload": {}
+        "payload": payload
     }
+    resp = req.post("http://" + address +
+                    "/config", json=msg)
+    json = resp.json()
+    return json
+
+
+def request_power():
     try:
-        resp = req.post("http://" + settings.device_address +
-                        "/config", json=msg)
-        payload = resp.json()
+        payload = meross_request(
+            settings.device_address, "GET", "Appliance.Control.Electricity", {})
         power = payload["payload"]["electricity"]["power"]
         process_power(power)
     except Exception as ex:
@@ -208,7 +204,7 @@ client.unsubscribe(settings.resend_topic)
 
 while True:
     request_power()
-    rgb = get_colour(last["level"], last["status"])
+    rgb = get_colour(last["litres"], last["level"], last["status"])
     if rgb != colour:
         set_light(rgb)
         colour = rgb
