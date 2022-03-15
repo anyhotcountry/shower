@@ -30,6 +30,17 @@ last = {
     "litres": 0
 }
 
+def rgb_to_int(r, g, b):
+    return 65536 * r + 256 * g + b
+
+WHITE = rgb_to_int(255, 255, 255)
+BLUE = rgb_to_int(0, 0, 255)
+GREEN = rgb_to_int(0, 255, 0)
+ORANGE = rgb_to_int(255, 127, 0)
+RED = rgb_to_int(255, 0, 0)
+
+colour = -1
+
 logger = logging.getLogger(__name__)
 logger.info("Starting Shower Monitor...")
 client = mqtt.Client()
@@ -110,6 +121,50 @@ def on_message(client, userdata, msg):
         last = payload
 
 
+def set_light(rgb):
+    timestamp = get_unix_time()
+    message_id = msg_id(timestamp)
+    sign = signing_key(message_id, settings.key, timestamp)
+    msg = {
+        "header": {
+            "from": "http://" + settings.device_address + "/config",
+            "messageId": message_id,
+            "method": "SET",
+            "namespace": "Appliance.Control.Light",
+            "payloadVersion": 1,
+            "sign": sign,
+            "timestamp": str(timestamp)
+        },
+        "payload": {
+            "light": {
+                "capacity": 6 if rgb == WHITE else 5,
+                "channel": 0,
+                "rgb": rgb,
+                "temperature": 100,
+                "luminance": 100,
+                "transform": -1
+            }
+        }
+    }
+    try:
+        resp = req.post("http://" + settings.light_address +
+                        "/config", json=msg, timeout=0.05)
+    except ConnectionError as ex:
+        logger.warning("Setting light failed: {}".format(ex))
+
+def get_rgb(r, g, b):
+    return 65536 * r + 256 * g + b
+
+def get_colour(litres, level, status):
+    if status == "off":
+        return WHITE
+    elif level < 25 or litres > 75:
+        return RED
+    elif litres > 50:
+        return ORANGE
+    else:
+        return GREEN
+
 def request_power():
     timestamp = get_unix_time()
     message_id = msg_id(timestamp)
@@ -153,6 +208,10 @@ client.unsubscribe(settings.resend_topic)
 
 while True:
     request_power()
+    rgb = get_colour(last["level"], last["status"])
+    if rgb != colour:
+        set_light(rgb)
+        colour = rgb
     time.sleep(2)
     if time.time() - last["timestamp"] > 60:
         logger.warning("No messages received for 60 seconds. Exiting. ")

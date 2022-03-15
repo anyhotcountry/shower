@@ -1,6 +1,7 @@
 # Copy to settings.py
 mqtt_broker = "192.168.1.2"
 device_address = "192.168.1.3"
+light_address = "192.168.1.4"
 key = "002debbf74504093a8864093dc086c87"
 resend_topic = "home/shower"
 tls = True
